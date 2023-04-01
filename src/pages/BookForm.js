@@ -105,7 +105,7 @@ const BookForm = () => {
               Year
             </label>
             <input
-              type="text"
+              type="number"
               id="year"
               name="year"
               value={input.year}
@@ -122,7 +122,7 @@ const BookForm = () => {
               Pages
             </label>
             <input
-              type="text"
+              type="number"
               id="pages"
               name="pages"
               value={input.pages}
