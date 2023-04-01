@@ -46,7 +46,7 @@ const BookList = () => {
                 >
                   <img
                     src={`http://localhost:8000/${book.image}`}
-                    alt=""
+                    alt="Book Image"
                     className="h-60 w-full object-cover object-center rounded"
                   />
                   <div className="p-5">

@@ -12,6 +12,7 @@ import BookList from './pages/BookList';
 import BookForm from './pages/BookForm';
 import BookDetail from './pages/BookDetail';
 import { useEffect, useState } from 'react';
+import NotFound from './pages/NotFound';
 
 function App() {
   const PrivateRoute = ({ children, ...rest }) => {
@@ -83,6 +84,7 @@ function App() {
                 </AuthRoute>
               }
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </BookProvider>
       </UserProvider>

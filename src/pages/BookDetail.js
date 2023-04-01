@@ -36,7 +36,7 @@ const BookDetail = () => {
         <img
           className="object-cover w-100 h-96 max-w-md mr-4"
           src={`http://localhost:8000/${book.image}`}
-          alt=""
+          alt="Book Image"
         />
         <div className="flex flex-col justify-between p-4 leading-normal">
           <h5 className="text-2xl font-bold tracking-tight text-indigo-900">
