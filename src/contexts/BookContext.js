@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { createContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 export const BookContext = createContext();
 
@@ -37,12 +38,24 @@ export const BookProvider = ({ children }) => {
         },
       })
       .then(() => {
-        alert('Succesfully add book!');
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Succesfully add book!',
+          showConfirmButton: false,
+          timer: 1500,
+        });
         navigate('/');
       })
       .catch((error) => {
         console.log(error.message);
-        alert(error.message);
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: error.message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
   };
 
@@ -56,7 +69,13 @@ export const BookProvider = ({ children }) => {
       })
       .catch((error) => {
         console.log(error.message);
-        alert(error.message);
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: error.message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
   };
 
@@ -76,12 +95,24 @@ export const BookProvider = ({ children }) => {
         }
       )
       .then(() => {
-        alert('Succesfully update book!');
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Succesfully update book!',
+          showConfirmButton: false,
+          timer: 1500,
+        });
         navigate('/');
       })
       .catch((error) => {
         console.log(error.message);
-        alert(error.message);
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: error.message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
   };
 
@@ -94,12 +125,24 @@ export const BookProvider = ({ children }) => {
         headers: { authorization: 'Bearer ' + localStorage.getItem('token') },
       })
       .then(() => {
-        alert('Succesfully delete book!');
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Succesfully delete book!',
+          showConfirmButton: false,
+          timer: 1500,
+        });
         navigate('/');
       })
       .catch((error) => {
         console.log(error.message);
-        alert(error.message);
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: error.message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
   };
 

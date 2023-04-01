@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { createContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 export const UserContext = createContext();
 
@@ -13,11 +14,23 @@ export const UserProvider = ({ children }) => {
     axios
       .post('http://localhost:8000/register', { name, email, password })
       .then(() => {
-        alert('Successfully registered!');
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Successfully registered!',
+          showConfirmButton: false,
+          timer: 1500,
+        });
         navigate('/login');
       })
       .catch((error) => {
-        alert(error.response.data.message);
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: error.response.data.message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
   };
 
@@ -28,11 +41,23 @@ export const UserProvider = ({ children }) => {
       .post('http://localhost:8000/login', { email, password })
       .then((res) => {
         localStorage.setItem('token', res.data.token);
-        alert('Successfully login!');
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Successfully login!',
+          showConfirmButton: false,
+          timer: 1500,
+        });
         navigate('/');
       })
       .catch((error) => {
-        alert(error.response.data.message);
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: error.response.data.message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
   };
 
