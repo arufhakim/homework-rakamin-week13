@@ -30,6 +30,21 @@ function App() {
 
     return <> {isAuth ? children : ''}</>;
   };
+
+  const AuthRoute = ({ children, ...rest }) => {
+    const [isAuth, setIsAuth] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        navigate('/');
+      }
+    }, []);
+
+    return <> {!isAuth ? children : ''}</>;
+  };
+
   return (
     <Router>
       <UserProvider>
@@ -53,8 +68,22 @@ function App() {
               }
             />
             <Route path="/books/:id" element={<BookDetail />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
+            <Route
+              path="/register"
+              element={
+                <AuthRoute>
+                  <Register />
+                </AuthRoute>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <AuthRoute>
+                  <Login />
+                </AuthRoute>
+              }
+            />
           </Routes>
         </BookProvider>
       </UserProvider>
