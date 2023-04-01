@@ -1,10 +1,18 @@
-import axios from 'axios';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
+import Navbar from '../components/Navbar';
 import { BookContext } from '../contexts/BookContext';
-import Landing from '../layouts/Landing';
 
-const BookAdd = () => {
-  const { input, setInput, handleCreate, currentId, setCurrentId, handleUpdate } = useContext(BookContext);
+const BookForm = () => {
+  const {
+    input,
+    setInput,
+    currentId,
+    setCurrentId,
+    handleCreate,
+    handleUpdate,
+  } = useContext(BookContext);
+
+  const [file, setFile] = useState(null);
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -12,33 +20,37 @@ const BookAdd = () => {
     setInput({ ...input, [name]: value });
   };
 
-  const [file, setFile] = useState(null);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (currentId === -1) {
+      handleCreate({ ...input, file });
+    } else {
+      handleUpdate(currentId, { ...input });
+    }
+    setInput({
+      title: '',
+      author: '',
+      publisher: '',
+      year: 0,
+      pages: 0,
+    });
+    setFile(null);
+    setCurrentId(-1);
+  };
 
   return (
-    <Landing>
+    <>
+      <Navbar />
       <div className="mx-10 mt-10 mb-12 basis-4/5">
-        <p className="text-3xl text-center font-bold text-black mb-6 pb-6 border-b-4 border-indigo-700 w-48 mx-auto">Book Form</p>
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            if (currentId === -1) {
-              handleCreate({ ...input, file });
-            } else {
-              handleUpdate(currentId, { ...input });
-            }
-            setInput({
-              title: '',
-              author: '',
-              publisher: '',
-              year: 0,
-              pages: 0,
-            });
-            setFile(null);
-            setCurrentId(-1);
-          }}
-        >
+        <p className="text-3xl text-center font-bold text-black mb-6 pb-6 border-b-4 border-[#FF4C29] w-48 mx-auto">
+          {currentId === -1 ? 'Add Book' : 'Edit Book'}
+        </p>
+        <form onSubmit={handleSubmit}>
           <div className="mb-6">
-            <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900">
+            <label
+              htmlFor="title"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
               Title
             </label>
             <input
@@ -52,7 +64,10 @@ const BookAdd = () => {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="author" className="block mb-2 text-sm font-medium text-gray-900">
+            <label
+              htmlFor="author"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
               Author
             </label>
             <input
@@ -66,7 +81,10 @@ const BookAdd = () => {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="publisher" className="block mb-2 text-sm font-medium text-gray-900">
+            <label
+              htmlFor="publisher"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
               Publisher
             </label>
             <input
@@ -80,7 +98,10 @@ const BookAdd = () => {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="year" className="block mb-2 text-sm font-medium text-gray-900">
+            <label
+              htmlFor="year"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
               Year
             </label>
             <input
@@ -94,7 +115,10 @@ const BookAdd = () => {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="pages" className="block mb-2 text-sm font-medium text-gray-900">
+            <label
+              htmlFor="pages"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
               Pages
             </label>
             <input
@@ -109,7 +133,10 @@ const BookAdd = () => {
           </div>
           {currentId === -1 ? (
             <div className="mb-6">
-              <label htmlFor="image" className="block mb-2 text-sm font-medium text-gray-900">
+              <label
+                htmlFor="image"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
                 Image
               </label>
               <input
@@ -122,28 +149,26 @@ const BookAdd = () => {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 required
               />
-              {/* <button
-              onClick={async () => {
-                if (!file) {
-                  alert('Pililah');
-                  return;
-                }
-
-                const formData = new FormData();
-                formData.append('image', file);
-
-                try {
-                  const res = await axios.post(`http://localhost:8000/upload`, formData, {
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                  });
-                } catch (error) {}
-              }}
-            >
-              Upload
-            </button> */}
             </div>
           ) : (
-            ''
+            <div className="mb-6">
+              <label
+                htmlFor="image"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                Image
+              </label>
+              <input
+                type="file"
+                id="image"
+                name="image"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                disabled
+              />
+              <span className="text-xs text-red-700">
+                Image column disabled on update
+              </span>
+            </div>
           )}
           <div className="flex justify-end">
             <button
@@ -155,8 +180,8 @@ const BookAdd = () => {
           </div>
         </form>
       </div>
-    </Landing>
+    </>
   );
 };
 
-export default BookAdd;
+export default BookForm;

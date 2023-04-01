@@ -4,15 +4,23 @@ const Navbar = () => {
   return (
     <nav className="flex items-center justify-between flex-wrap bg-[#082032] p-6 sticky top-0 z-50">
       <div className="flex items-center flex-shrink-0 text-white mr-6">
-        <span className="font-semibold text-xl tracking-tight">Booking Books</span>
+        <span className="font-semibold text-xl tracking-tight">
+          Booking Books
+        </span>
       </div>
       <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
         <div className="text-sm lg:flex-grow">
-          <Link to="/" className="block mt-4 lg:inline-block lg:mt-0 text-[#FF4C29] hover:text-white mr-4">
+          <Link
+            to="/"
+            className="block mt-4 lg:inline-block lg:mt-0 text-[#FF4C29] hover:text-white mr-4"
+          >
             Book List
           </Link>
           {localStorage.getItem('token') && (
-            <Link to="/books/create" className="block mt-4 lg:inline-block lg:mt-0 text-[#FF4C29] hover:text-white mr-4">
+            <Link
+              to="/books/create"
+              className="block mt-4 lg:inline-block lg:mt-0 text-[#FF4C29] hover:text-white mr-4"
+            >
               Add Book
             </Link>
           )}

@@ -1,10 +1,16 @@
-import { BrowserRouter as Router, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Navigate,
+  Route,
+  Routes,
+  useNavigate,
+} from 'react-router-dom';
 import { BookProvider } from './contexts/BookContext';
 import { UserProvider } from './contexts/UserContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import BookList from './pages/BookList';
-import BookAdd from './pages/BookAdd';
+import BookForm from './pages/BookForm';
 import BookDetail from './pages/BookDetail';
 import { useEffect, useState } from 'react';
 
@@ -34,7 +40,7 @@ function App() {
               path="/books/create"
               element={
                 <PrivateRoute>
-                  <BookAdd />
+                  <BookForm />
                 </PrivateRoute>
               }
             />
@@ -42,7 +48,7 @@ function App() {
               path="/books/edit/:id"
               element={
                 <PrivateRoute>
-                  <BookAdd />
+                  <BookForm />
                 </PrivateRoute>
               }
             />

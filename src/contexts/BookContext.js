@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { createContext, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const BookContext = createContext();
 
@@ -8,9 +8,7 @@ export const BookProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const [books, setBooks] = useState([]);
-  const [book, setBook] = useState({});
   const [currentId, setCurrentId] = useState(-1);
-
   const [input, setInput] = useState({
     title: '',
     author: '',
@@ -19,55 +17,10 @@ export const BookProvider = ({ children }) => {
     pages: 0,
   });
 
-  const fetchBooks = () => {
-    axios
-      .get('http://localhost:8000/books')
-      .then((res) => {
-        setBooks([...res.data.books]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const fetchBookById = (id) => {
-    axios
-      .get(`http://localhost:8000/books/${id}`)
-      .then((res) => {
-        setBook({ ...res.data.book });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const handleEdit = (id) => {
-    axios
-      .get(`http://localhost:8000/books/${id}`)
-      .then((res) => {
-        setCurrentId(id);
-        setInput({ ...res.data.book });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const handleDelete = (ids) => {
-    const id = parseInt(ids);
-    axios
-      .delete(`http://localhost:8000/books/${id}`, { headers: { authorization: 'Bearer ' + localStorage.getItem('token') } })
-      .then((res) => {
-        alert('Succesfully delete book!');
-        navigate('/');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
+  // handleCreate book
   const handleCreate = (input) => {
     const { title, author, publisher, year, pages, file } = input;
+
     const formData = new FormData();
     formData.append('title', title);
     formData.append('author', author);
@@ -78,21 +31,39 @@ export const BookProvider = ({ children }) => {
 
     axios
       .post('http://localhost:8000/books', formData, {
-        headers: { authorization: 'Bearer ' + localStorage.getItem('token'), 'Content-Type': 'multipart/form-data' },
+        headers: {
+          authorization: 'Bearer ' + localStorage.getItem('token'),
+          'Content-Type': 'multipart/form-data',
+        },
       })
-      .then((res) => {
+      .then(() => {
         alert('Succesfully add book!');
         navigate('/');
       })
       .catch((error) => {
-        console.log(localStorage.getItem('token'));
-
-        console.log(error);
+        console.log(error.message);
+        alert(error.message);
       });
   };
 
+  // handleEdit book
+  const handleEdit = (id) => {
+    axios
+      .get(`http://localhost:8000/books/${id}`)
+      .then((res) => {
+        setInput({ ...res.data.book });
+        setCurrentId(id);
+      })
+      .catch((error) => {
+        console.log(error.message);
+        alert(error.message);
+      });
+  };
+
+  //handleUpdate
   const handleUpdate = (id, input) => {
     const { title, author, publisher, year, pages } = input;
+
     const intYear = parseInt(year);
     const intPages = parseInt(pages);
 
@@ -104,30 +75,46 @@ export const BookProvider = ({ children }) => {
           headers: { authorization: 'Bearer ' + localStorage.getItem('token') },
         }
       )
-      .then((res) => {
+      .then(() => {
         alert('Succesfully update book!');
         navigate('/');
       })
       .catch((error) => {
-        console.log(localStorage.getItem('token'));
+        console.log(error.message);
+        alert(error.message);
+      });
+  };
 
-        console.log(error);
+  // handleDelete book
+  const handleDelete = (id) => {
+    const bookId = parseInt(id);
+
+    axios
+      .delete(`http://localhost:8000/books/${bookId}`, {
+        headers: { authorization: 'Bearer ' + localStorage.getItem('token') },
+      })
+      .then(() => {
+        alert('Succesfully delete book!');
+        navigate('/');
+      })
+      .catch((error) => {
+        console.log(error.message);
+        alert(error.message);
       });
   };
 
   const values = {
+    books,
+    setBooks,
     currentId,
     setCurrentId,
     input,
     setInput,
-    book,
-    books,
-    fetchBooks,
-    fetchBookById,
+    handleCreate,
     handleEdit,
     handleUpdate,
-    handleCreate,
     handleDelete,
   };
+
   return <BookContext.Provider value={values}>{children}</BookContext.Provider>;
 };

@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  // redirect
   const navigate = useNavigate();
 
   // handleSubmit register
@@ -13,7 +12,7 @@ export const UserProvider = ({ children }) => {
     const { name, email, password } = input;
     axios
       .post('http://localhost:8000/register', { name, email, password })
-      .then((res) => {
+      .then(() => {
         alert('Successfully registered!');
         navigate('/login');
       })
